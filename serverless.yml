@@ -1,0 +1,171 @@
+service: ${env:SERVICE_NAME} 
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: ${env:ENV}
+  region: ap-southeast-2
+  stackTags:
+    FRAMEWORK: serverless
+  # We need to give the lambda functions access to list and write to our bucket, it needs:
+  # - to be able to 'list' the bucket
+  # - to be able to upload a file (PutObject)
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "ssm:DescribeParameters"
+        - "ssm:GetParameter*"
+      Resource:
+        - "*"
+
+# Basic Index handler for GUI
+functions:
+  index:
+    description: ${env:DESC}
+    handler: handler.index 
+    package:
+      exclude:
+        - .env
+        - .env*
+        - ./**
+        - output/**/*
+        - events/**/*
+      include:
+        - handler.js
+        - package.json
+        - node_modules/**
+        - src/**/*
+    timeout: 10
+    # We need to define the RDS login
+    environment:
+      MYSQL_HOST: ${env:MYSQL_HOST}
+      MYSQL_USER: ${env:MYSQL_USER}
+      MYSQL_PASSWORD_NAME: ${env:MYSQL_PASSWORD_NAME}
+      MYSQL_DATABASE: ${env:MYSQL_DATABASE}
+    #  We need to allocate VPC and Subnets for access to RDS
+    vpc:
+      securityGroupIds:
+        - ${env:SECURITY_GROUP_ID_1}
+        - ${env:SECURITY_GROUP_ID_2}
+      subnetIds:
+        - ${env:SUBNET_ID_1}
+        - ${env:SUBNET_ID_2}
+    events:
+      - http:
+          path: /
+          method: get
+          cors: true
+
+  login:
+    description: ${env:DESC}
+    handler: handler.login 
+    package:
+      exclude:
+        - .env
+        - .env*
+        - ./**
+        - output/**/*
+        - events/**/*
+        - node_modules/**
+      include:
+        - handler.js
+        - package.json
+        - src/**/*
+    # We need to define the RDS login
+    environment:
+      MYSQL_HOST: ${env:MYSQL_HOST}
+      MYSQL_USER: ${env:MYSQL_USER}
+      MYSQL_PASSWORD_NAME: ${env:MYSQL_PASSWORD_NAME}
+      MYSQL_DATABASE: ${env:MYSQL_DATABASE}
+    #  We need to allocate VPC and Subnets for access to RDS
+    vpc:
+      securityGroupIds:
+        - ${env:SECURITY_GROUP_ID_1}
+        - ${env:SECURITY_GROUP_ID_2}
+      subnetIds:
+        - ${env:SUBNET_ID_1}
+        - ${env:SUBNET_ID_2}
+    events:
+      - http:
+          path: login
+          method: post
+          cors: true
+
+  logout:
+    description: ${env:DESC}
+    handler: handler.logout 
+    package:
+      exclude:
+        - .env
+        - .env*
+        - ./**
+        - output/**/*
+        - events/**/*
+        - node_modules/**
+      include:
+        - handler.js
+        - package.json
+        - src/**/*
+    #  We need to allocate VPC and Subnets for access to RDS
+    vpc:
+      securityGroupIds:
+        - ${env:SECURITY_GROUP_ID_1}
+        - ${env:SECURITY_GROUP_ID_2}
+      subnetIds:
+        - ${env:SUBNET_ID_1}
+        - ${env:SUBNET_ID_2}
+    events:
+      - http:
+          path: logout
+          method: post
+  
+  # Basic Static File handler to serve up JS and CSS files
+  staticfiles:
+    description: ${env:DESC}
+    handler: handler.staticfile
+    package:
+      exclude:
+        - .env
+        - .env*
+        - ./**
+        - output/**/*
+        - events/**/*
+      include:
+        - handler.js
+        - package.json
+        - node_modules/**
+        - src/**/*
+    events:
+      - http:
+          path: vendor/js/{url}
+          method: get
+      - http:
+          path: vendor/css/{url}
+          method: get
+      - http:
+          path: js/{url}
+          method: get
+      - http:
+          path: css/{url}
+          method: get
+      - http:
+          path: img/{url}
+          method: get
+
+resources:
+  Resources:
+    ApiGatewayRestApi:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: ${self:service}-${env:ENV}
+
+Outputs:
+	PublishLambdaFunctionArn:
+      Description: ${env:DESC}
+      Value:
+        "Fn::GetAtt": [ PublishLambdaFunction, Arn ]
+      Export: {"Name": "${self:service}-${env:ENV}"}
+
+plugins:
+  - serverless-offline
+  

@@ -1,0 +1,257 @@
+/* -------------------------------- 
+
+Primary style
+
+-------------------------------- */
+
+*,
+*:after,
+*:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 100%;
+    font-family: "Open Sans", sans-serif;
+    color: white;
+    background-color: #445b7c;
+    overflow-x: hidden;
+}
+
+a {
+    color: #dc717d;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+
+/* -------------------------------- 
+
+Main components 
+
+-------------------------------- */
+
+header {
+    position: relative;
+    height: 140px;
+    padding-top: 50px;
+    line-height: 30px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 22px;
+    font-size: 1.375rem;
+    color: #ffffff;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+header h1 small {
+    font-size: 18px;
+}
+
+@media only screen and (min-width: 768px) {
+    header {
+        height: 240px;
+        padding-top: 100px;
+    }
+    header h1 {
+        font-size: 32px;
+        font-size: 2rem;
+    }
+}
+
+.content {
+    text-align: center;
+}
+
+.thumbnail_holder {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.thumbnail {
+    width: 300px;
+    min-height: 280px;
+    position: relative;
+    margin: 10px;
+    background: rgba(220, 113, 125, .5);
+    text-shadow: 0 0px 8px rgba(68, 91, 124, 0.9);
+}
+
+.thumbnail img {
+    max-width: 100%;
+    opacity: 0.35;
+    -moz-opacity: 35%;
+    -webkit-opacity: 35%;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+}
+
+.thumbnail img.no-fade {
+    max-width: 100%;
+    opacity: 1;
+    -moz-opacity: 100%;
+    -webkit-opacity: 100%;
+}
+
+a:hover .thumbnail img {
+    opacity: 0.10;
+    -moz-opacity: 10%;
+    -webkit-opacity: 10%;
+}
+
+a .thumbnail {
+    color: white;
+    text-decoration: none;
+}
+
+.thumbnail h1,
+.thumbnail h2,
+.thumbnail h3,
+.thumbnail span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    transform: translateY(-50%);
+    /* doesn't work in IE9 and older I'm affraid */
+    margin: 0;
+}
+
+.thumbnail h1 {
+    font-size: 15px;
+    bottom: calc(50% - 18px);
+}
+
+.thumbnail h2 {
+    font-size: 12px;
+    bottom: 15px;
+}
+
+.thumbnail h3 {
+    bottom: 2px;
+    font-size: 10px;
+}
+
+.thumbnail span {
+    bottom: 50%;
+    font-size: 18px;
+    opacity: 0.0;
+    -webkit-transition: all.5s;
+    transition: all .5s;
+}
+
+a:hover .thumbnail span {
+    opacity: 100;
+    display: block;
+}
+
+.result {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.form-style {
+    width: 300px;
+    height: 280px;
+    font-size: 16px;
+    background: rgba(220, 113, 125, .5);
+    padding: 30px 30px 15px 30px;
+    /* border: 5px solid #53687E; */
+    margin: 10px;
+    display: inline-block;
+}
+
+.backBtn a,
+.form-mini input[type=submit],
+.form-style input[type=submit],
+.form-style input[type=button],
+.form-style input[type=text],
+.form-style input[type=email],
+.form-style input[type=number],
+.form-style input[type=password],
+.form-style textarea,
+.form-style select,
+.form-style label {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.form-style label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form-style label>span {
+    display: inline-block;
+    float: left;
+}
+
+.form-style input[type=text],
+.form-style input[type=number],
+.form-style input[type=password],
+.form-style select,
+.form-style input[type=email] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed #83A4C5;
+    width: 100%;
+    outline: none;
+    padding: 0px 0px 0px 0px;
+    font-style: italic;
+}
+
+.form-style input::placeholder {
+    color: rgba(255, 255, 255, 0.5)
+}
+
+.form-style textarea {
+    font-style: italic;
+    padding: 0px 0px 0px 0px;
+    background: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 1px dashed #83A4C5;
+    width: 275px;
+    overflow: hidden;
+    resize: none;
+    height: 20px;
+}
+
+.form-style textarea:focus,
+.form-style input[type=text]:focus,
+.form-style input[type=password]:focus,
+.form-style input[type=email]:focus,
+.form-style input[type=email] :focus {
+    border-bottom: 1px dashed #D9FFA9;
+}
+
+.form-mini input[type=submit],
+.form-style input[type=submit],
+.form-style input[type=button],
+.backBtn a {
+    line-height: inherit;
+    font-family: "Open Sans", sans-serif;
+    background: #576E86;
+    border: none;
+    padding: 8px 10px 8px 10px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.backBtn a:hover,
+.form-mini input[type=submit]:hover,
+.form-style input[type=submit]:hover,
+.form-style input[type=button]:hover {
+    background: #394D61;
+}

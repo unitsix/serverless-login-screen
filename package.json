@@ -1,0 +1,21 @@
+{
+    "name": "serverless-login-screen",
+    "version": "1.0.0",
+    "description": "",
+    "main": "handler.js",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "serverless-aws-static-file-handler": "^1.0.0",
+        "cookie": "^0.3.1",
+        "lodash.template": "^4.4.0",
+        "mysql": "~2.15.0"
+    },
+    "devDependencies": {
+        "serverless-offline": "^3.16.0"
+    }
+}

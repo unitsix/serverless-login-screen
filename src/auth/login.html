@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+
+    <title>Login</title>
+</head>
+
+<body>
+
+    <header>
+        <h1 id="title">Login</h1>
+    </header>
+    <div class="content">
+        <form id="loginForm" action="POST" class="form-style">
+            <div>
+                <label>Username:</label>
+                <input type="text" name="username" id="username" />
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" id="password" />
+            </div>
+            <div>
+                <p id="result" class="result"></p>
+            </div>
+            <div>
+                <input type="submit" value="Log In" id="loginBtn" />
+            </div>
+        </form>
+    </div>
+    <script>
+        var post = function(event) {
+            document.getElementById('result').innerHTML = 'Checking details';
+            document.getElementById('loginBtn').style.display = "none";
+            event.preventDefault();
+            var data = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value
+            };
+            fetch('./login', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            }).then(function(response) {
+                if (response.status === 200) {
+                    response.json().then(function(res) {
+                        if (res.success) {
+                            document.getElementById('result').innerHTML = 'Logging in';
+                            location.reload();
+                        } else {
+                            document.getElementById('result').innerHTML = res.message;
+                        }
+                    });
+                } else {
+                    document.getElementById('result').innerHTML = response.statusText;
+                }
+                document.getElementById('loginBtn').style.display = "inline-block";
+            }).catch(function(error) {
+                document.getElementById('result').innerHTML = error.message;
+                document.getElementById('loginBtn').style.display = "inline-block";
+            });
+        };
+        document.getElementById('loginForm').addEventListener('submit', post);
+    </script>
+</body>
+
+</html>
